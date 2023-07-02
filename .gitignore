@@ -1,0 +1,29 @@
+.azure
+*_env
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# NPM
+npm-debug.log*
+node_modules
+static/
+
+#others
+.DS_STORE
+build/
+remote-repo/
+coverage/
+.module-cache
+test/the-files-to-test.generated.js
+*.log*
+chrome-user-data
+.idea
+*.iml
+.vscode
