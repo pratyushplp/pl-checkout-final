@@ -1,2 +1,2 @@
-# pl-checkout-final
-Stepwise Pl frontend
+# pl-frontend
+Frontend for QA application like chatgpt.
