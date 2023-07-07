@@ -93,10 +93,10 @@ const Chat = () => {
                          <div key={index}>
                              <UserChatMessage message={answer[0]} />
                              <div className={styles.chatMessageGpt}>
-                                 <Answer
+                                 {/* <Answer
                                      key={index}
                                      answer={answer[1]}
-                                 />
+                                 /> */}
                              </div>
                          </div>
                      ))}
