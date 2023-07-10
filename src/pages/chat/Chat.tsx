@@ -5,18 +5,19 @@ import { QuestionInput } from "../../components/QuestionInput";
 import { ClearChatButton } from "../../components/ClearChatButton";
 import { UserChatMessage } from "../../components/UserChatMessage";
 import { Answer } from "../../components/Answer";
+import { AskQuestion } from "../../api";
 import { Modal } from "antd";
 import {config} from "../../Utils/Utils"
-
+import type {AskRequest,AskResponse, citation} from "../../api/apiTypes";
 import styles from "./Chat.module.css";
 
 
-type AskResponse = {
-    answer: string;
-    thoughts: string | null;
-    data_points: string[];
-    error?: string | undefined;
-}
+// type AskResponse = {
+//     answer: string;
+//     thoughts: string | null;
+//     data_points: string[];
+//     error?: string | undefined;
+// }
 
 const Chat = () => {
 
@@ -27,7 +28,11 @@ const Chat = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const lastQuestionRef = useRef<string>("");
     const [error, setError] = useState<unknown>();
-    const [answers, setAnswers] = useState<[user: string, response: AskResponse][]>([]);
+    const [answers, setAnswers] = useState<[question:string, response: AskResponse][]>([]);
+    const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
+    const [activeCitation, setActiveCitation] = useState<string>();
+    const [citationTab, setCitationTab] = useState<boolean>(false);
+
 
     const [modal, contextHolder] = Modal.useModal();
 
@@ -49,7 +54,21 @@ const Chat = () => {
         setAnswers([]);
     };
 
-    const makeApiRequest = async (question: string) => {
+    const onShowCitation = (citation:string, index:number)=>
+    {
+        if(activeCitation === citation && citationTab
+            && selectedAnswer === index )
+            {
+                setCitationTab(false)
+            }
+            else{
+                setActiveCitation(citation)
+                setCitationTab(true)
+            }
+            setSelectedAnswer(index);
+    }
+
+    const makeApiRequest = async (question: string, isDatapoint =false) => {
 
         if(!selectedFile)
         {
@@ -63,9 +82,23 @@ const Chat = () => {
         setIsLoading(true);
 
         try {
-            // setAnswers([...answers, [question, result]]);
-            let mock_result = {answer:"Policy number is 456 [1]. Effective date is 2023-1-1 [2].", thoughts:"", data_points: ["Policy_number","Effective_date"]}
-            setAnswers([...answers, [question, mock_result]]);
+            console.log("inside makeApiRequest")
+            let request : AskRequest = {question: question, isDatapoint: isDatapoint}
+            let response = await AskQuestion(request)
+            console.log("inside makeApiRequest part 2")
+            // let response = null
+            if(response)
+            {
+                setAnswers([...answers, [question, response]])
+            }
+            else
+            {
+            let dummyCitation: citation[] = [{filepath: "", documentName:"", pageNo: 3}]
+             //TODO: Remove the else block later
+             let mock_result : AskResponse  = {answer:"Policy number is 456 [1]. Effective date is 2023-1-1 [2].",
+                                questionId:"12345", citations: dummyCitation}
+             setAnswers([...answers, [question, mock_result]])
+            }
 
         } catch (e) {
             setError(e);
@@ -73,8 +106,6 @@ const Chat = () => {
             setIsLoading(false);
         }
     };
-
-
 
 
     return (
@@ -93,10 +124,12 @@ const Chat = () => {
                          <div key={index}>
                              <UserChatMessage message={answer[0]} />
                              <div className={styles.chatMessageGpt}>
-                                 {/* <Answer
+                                 <Answer
                                      key={index}
                                      answer={answer[1]}
-                                 /> */}
+                                     isSelected = {selectedAnswer === index && citationTab}
+                                     onCitationClicked={c=>onShowCitation(c,index)}
+                                 />
                              </div>
                          </div>
                      ))}
@@ -105,7 +138,7 @@ const Chat = () => {
                         <div className={styles.chatEmptyState}>
                         <h2 className={styles.chatEmptyStateTitle}>Chat with your data</h2>
                         <h3 className={styles.chatEmptyStateSubtitle}>Enter prompt or choose from below</h3>
-                          <ExampleDatapoints onSend={question => makeApiRequest(question)} selectedDatapoints= {selectedDatapoints} onSelectedDatapoints = {onSelectedDatapoints} path={path} onSelectedPath = {onSelectedPath}/>
+                          <ExampleDatapoints onSend={question => makeApiRequest(question, true)} selectedDatapoints= {selectedDatapoints} onSelectedDatapoints = {onSelectedDatapoints} path={path} onSelectedPath = {onSelectedPath}/>
                     </div>)
                     }
 

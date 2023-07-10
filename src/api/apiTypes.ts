@@ -11,15 +11,15 @@ export type citation =
 
 export type AskRequest = {
 question: string,
-documentType: string,
-isDatapoints?: boolean,
+isDatapoint: boolean,
+documentType?: string,
 }
 
 export type AskResponse =
 {
-    answer: string [],
-    citations: citation[],
+    answer: string,
     questionId:string,
+    citations?: citation[],
     error?: string;
 }
 

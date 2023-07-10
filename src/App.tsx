@@ -4,9 +4,6 @@ import { BrowserRouter,HashRouter, Routes, Route } from "react-router-dom";
 import NoPage from "./pages/NoPage"
 import Layout from './pages/layout/Layout';
 import Chat from './pages/chat/Chat';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 
 export default function App() {
@@ -20,6 +17,5 @@ export default function App() {
     </Routes>
     </BrowserRouter>
   )
-
 }
 

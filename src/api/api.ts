@@ -3,7 +3,8 @@ import { AskRequest,AskResponse,Rating,Feedback } from "./apiTypes";
 //TODO:  typescript.
 export const AskQuestion = async (askRequest : AskRequest)=>
 {
-    let host_name = process.env.PL_HOST !== undefined && process.env.PL_HOST !== null ? process.env.PL_HOST.toString() : ''
+    import.meta.env.VITE_PL_HOST
+    let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
     let endpoint = host_name+"/score";
 
     const response = await fetch(endpoint,
@@ -12,11 +13,11 @@ export const AskQuestion = async (askRequest : AskRequest)=>
         headers:{
             "Content-Type":"application/json"
         },
-        body: JSON.stringify({askRequest})
+        body: JSON.stringify(askRequest)
         })
 
     const parsedResponse = await response.json()
-    if(parsedResponse.status>299 || !response.ok)
+    if( !parsedResponse || response.status>299 || !response.ok)
     {
         throw Error()
     }
@@ -25,7 +26,7 @@ export const AskQuestion = async (askRequest : AskRequest)=>
 
 export const SendRating = async (rating: Rating) =>
 {
-    let host_name = process.env.PL_HOST !== undefined && process.env.PL_HOST !== null ? process.env.PL_HOST.toString() : ''
+    let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
     let endpoint = host_name+"/rating";
 
     const response = await fetch(endpoint,
@@ -48,7 +49,7 @@ export const SendRating = async (rating: Rating) =>
 
 export const SendFeedback = async (feedback:Feedback)=>
 {
-    let host_name = process.env.PL_HOST !== undefined && process.env.PL_HOST !== null ? process.env.PL_HOST.toString() : ''
+    let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
     let endpoint = host_name+"/feedback";
 
     const response = await fetch(endpoint,
