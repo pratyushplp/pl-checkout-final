@@ -75,7 +75,7 @@ const Chat = () => {
         setIsLoading(true);
 
         try {
-            let request : AskRequest = {question: question, isDatapoint: isDatapoint}
+            let request : AskRequest = {prompt: question, isDatapoint: isDatapoint}
             let response = await AskQuestion(request)
             console.log(response)
             //TODO: Currently, predefined questionID, change to backend generated questionId later
