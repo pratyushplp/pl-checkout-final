@@ -12,13 +12,6 @@ import type {AskRequest,AskResponse, citation} from "../../api/apiTypes";
 import styles from "./Chat.module.css";
 
 
-// type AskResponse = {
-//     answer: string;
-//     thoughts: string | null;
-//     data_points: string[];
-//     error?: string | undefined;
-// }
-
 const Chat = () => {
 
     //for example Datapoints
@@ -82,14 +75,14 @@ const Chat = () => {
         setIsLoading(true);
 
         try {
-            console.log("inside makeApiRequest")
             let request : AskRequest = {question: question, isDatapoint: isDatapoint}
             let response = await AskQuestion(request)
-            console.log("inside makeApiRequest part 2")
-            // let response = null
+            console.log(response)
+            //TODO: Currently, predefined questionID, change to backend generated questionId later
+            let transformedResponse:AskResponse ={answer:response, questionId: "123"}
             if(response)
             {
-                setAnswers([...answers, [question, response]])
+                setAnswers([...answers, [question, transformedResponse]])
             }
             else
             {

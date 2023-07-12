@@ -51,7 +51,8 @@ const feedbackClicked = (e:any) =>
                 <>
                 <Stack.Item >
                     <p>
-                    Zip Code = 57069,State Abbrevation = SD, Policy Premium = $1549
+                        {answer.answer}
+                    {/* Zip Code = 57069,State Abbrevation = SD, Policy Premium = $1549 */}
                     </p>
                 </Stack.Item>
                 <Stack.Item>
