@@ -1,9 +1,8 @@
 import { AskRequest,AskResponse,Rating,Feedback } from "./apiTypes";
-
 //TODO:  typescript.
 export const AskQuestion = async (askRequest : AskRequest)=>
 {
-    import.meta.env.VITE_PL_HOST
+
     let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
     let endpoint = host_name+"/score";
 
