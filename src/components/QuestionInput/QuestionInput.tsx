@@ -92,8 +92,10 @@ interface Props {
         formData.append("session_id","1234567abc")
         tempFiles.forEach((file,index) =>
         {
+            console.log("YOLO")
+            console.log(file)
             // NOTE: the files name in the frontend and the argument name (i.e. files) in the function MUST be the same
-            formData.append("files",file,`file_${index}`);
+            formData.append("files",file);
         })
         let success = await UploadFile(formData)
         if(success)
