@@ -17,7 +17,7 @@ const Chat = () => {
     //for example Datapoints
     const [selectedDatapoints, setSelectedDatapoints] = useState<CheckboxValueType[]>([])
     const [path, setPath] = useState<string|null>(null)
-    const [selectedFile, setSelectedFile] = useState<File|null>();
+    const [selectedFile, setSelectedFile] = useState<File[]|null>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const lastQuestionRef = useRef<string>("");
     const [error, setError] = useState<unknown>();
@@ -89,7 +89,7 @@ const Chat = () => {
                 {
                     responses.forEach((response,indx)=>
                     {
-                        let transformedResponse:AskResponse ={answer:response}
+                        let transformedResponse:AskResponse ={answer:response.answer, questionId: response.questionId}
                         setQuestionAnswers(prevAnswers => [...prevAnswers, [questionList[indx], transformedResponse]])
                     })
                 }
@@ -103,9 +103,8 @@ const Chat = () => {
             {
             let request : AskRequest = {prompt: question, isDatapoint: isDatapoint}
             let response = await AskQuestion(request)
-            console.log(response)
             //TODO: Currently, predefined questionID, change to backend generated questionId later
-            let transformedResponse:AskResponse ={answer:response, questionId: "123"}
+            let transformedResponse:AskResponse ={ answer:response.answer, questionId: response.questionId }
             if(response)
             {
                 setQuestionAnswers([...questionAnswers, [question, transformedResponse]])

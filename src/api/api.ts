@@ -1,4 +1,7 @@
-import { AskRequest,AskResponse,Rating,Feedback } from "./apiTypes";
+import { AskRequest,AskResponse,Ratings,Feedback } from "./apiTypes";
+import Cookies from 'js-cookie';
+
+
 //TODO:  typescript.
 let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
 
@@ -10,7 +13,8 @@ export const AskQuestion = async (askRequest : AskRequest)=>
         {
         method:"POST",
         headers:{
-            "Content-Type":"application/json"
+            "Content-Type":"application/json",
+            "sessionId": Cookies.get('sessionId'),
         },
         body: JSON.stringify(askRequest)
         })
@@ -29,10 +33,13 @@ export const UploadFile = async (formData : FormData) =>
     let endpoint = host_name + "/files"
     const response = await fetch(endpoint,{
         method:"POST",
-
-    body: formData
-    })
+        headers: {
+            "sessionId": Cookies.get('sessionId'),
+          },
+        body: formData
+        })
     const parsedResponse = await response.json()
+
     if( !parsedResponse || response.status>299 || !response.ok)
     {
         //add logs later
@@ -42,17 +49,33 @@ export const UploadFile = async (formData : FormData) =>
     return true
 }
 
-export const SendRating = async (rating: Rating) =>
+export const GenerateSessionId = async () =>
 {
-    let endpoint = host_name+"/rating";
+    let endpoint = host_name + "/generateSession"
+    const response = await fetch(endpoint)
+
+    if(!response || !response.ok || response.status>299)
+    {
+        (`${response.status} :${response.statusText} `)
+        return null
+    }
+
+    console.log(response)
+    return await response.json()
+}
+
+export const SendRating = async (rating: Ratings) =>
+{
+    let endpoint = host_name+"/ratings";
 
     const response = await fetch(endpoint,
         {
         method:"POST",
         headers:{
-            "Content-Type":"application/json"
+            "Content-Type":"application/json",
+            "sessionId": Cookies.get('sessionId'),
         },
-        body: JSON.stringify({rating})
+        body: JSON.stringify(rating)
         })
 
     const parsedResponse = await response.json()
@@ -61,20 +84,19 @@ export const SendRating = async (rating: Rating) =>
         throw Error()
     }
     return parsedResponse
-
 }
 
 export const SendFeedback = async (feedback:Feedback)=>
 {
     let endpoint = host_name+"/feedback";
-
     const response = await fetch(endpoint,
         {
         method:"POST",
         headers:{
-            "Content-Type":"application/json"
+            "Content-Type":"application/json",
+            "sessionId": Cookies.get('sessionId'),
         },
-        body: JSON.stringify({feedback})
+        body: JSON.stringify(feedback)
         })
 
     const parsedResponse = await response.json()
@@ -83,5 +105,4 @@ export const SendFeedback = async (feedback:Feedback)=>
         throw Error()
     }
     return parsedResponse
-
 }
