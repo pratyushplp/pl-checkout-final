@@ -20,7 +20,7 @@ export type AskResponse =
 {
     answer: string,
     questionId:string,
-    citations?: citation[],
+    citationLinks?: string[],
     error?: string;
 }
 

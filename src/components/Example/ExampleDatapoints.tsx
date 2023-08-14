@@ -54,8 +54,7 @@ export const ExampleDatapoints = ({onSend,selectedDatapoints, onSelectedDatapoin
 
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
-    // console.log(key)
-    // message.info(`Click on item ${key}`);
+
     setShowCheckbox(!!key)
     onSelectedPath(key)
     if(key == 'PersonalLines/Home' )
@@ -91,7 +90,6 @@ export const ExampleDatapoints = ({onSend,selectedDatapoints, onSelectedDatapoin
     if(selectedDatapoints && selectedDatapoints.length>0)
     {
       let question = selectedDatapoints.toString()
-      console.log(question)
       onSend(question)
     }
 

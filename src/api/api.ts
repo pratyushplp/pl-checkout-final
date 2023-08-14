@@ -100,7 +100,7 @@ export const SendFeedback = async (feedback:Feedback)=>
         })
 
     const parsedResponse = await response.json()
-    if(parsedResponse.status>299 || !response.ok)
+    if(response.status>299 || !response.ok)
     {
         throw Error()
     }

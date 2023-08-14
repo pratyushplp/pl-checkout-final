@@ -1,5 +1,7 @@
 FROM node:lts-slim
-WORKDIR /webapp
+LABEL name="frontend"
+LABEL version="latest"
+WORKDIR /client
 COPY package*.json ./
 RUN npm install
 COPY . .

@@ -16,14 +16,16 @@ import type { Feedback, Ratings } from "../../api/apiTypes";
 interface Props {
     answer: AskResponse;
     isSelected?: boolean;
-    onCitationClicked: (filePath: string) => void;
+    answerIndex: number;
+    onShowCitation: (index: number, citationLink: string, citationIndex: number) => void;
 }
 
 
 export const Answer = ({
     answer,
     isSelected,
-    onCitationClicked,
+    onShowCitation,
+    answerIndex
 }: Props) => {
 
     const { TextArea } = Input;
@@ -31,6 +33,8 @@ export const Answer = ({
     const [ratingList, setRatingList] = useState<boolean[]>([false,false])
     const [showFeedback, setShowFeedback] = useState<boolean>(false)
     const [feedback, setFeedback] = useState<string>("")
+
+
     useEffect(()=>
     {
         async function sendRatingWrapper(tempRating: Ratings)
@@ -75,6 +79,7 @@ const onTextboxChange = (e:any) =>
     setFeedback(e.target.value)
 }
 
+
     return (
         <Stack className={`${styles.answerContainer} ${isSelected && styles.selected}`} verticalAlign="space-between">
             {answer && (
@@ -104,6 +109,18 @@ const onTextboxChange = (e:any) =>
             <TextArea rows={4} onChange={onTextboxChange}/>
             <Button className={styles.feedbackSend} onClick={onSendClicked} type="primary" size="small">send</Button>
             </div>}
+            <span className={styles.citationLearnMore}>Citations:</span>
+            {answer?.citationLinks && answer?.citationLinks.length > 0?
+            answer.citationLinks.map((citationLink,i)=>{
+                if(citationLink)
+                {
+                    return (
+                    <a key={i} className={styles.citation} onClick={()=>onShowCitation(answerIndex,citationLink,i)}>
+                    {`[${++i}]`}
+                    </a>)
+                }
+            })
+        :""}
         </Stack.Item>
                 </>
             )}
