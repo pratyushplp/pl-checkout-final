@@ -1,0 +1,25 @@
+
+1. add in vite.config.ts
+  "include": ["src", "Tests"],
+
+2. to fix css import issues
+install package identity-obj-proxy
+add update jest.config.json to
+{
+    "testEnvironment": "jsdom",
+    "transform": {
+        "^.+\\.tsx?$": "ts-jest"
+    },
+    "setupFilesAfterEnv": [
+        "@testing-library/jest-dom/extend-expect"
+    ],
+    "moduleNameMapper": {
+        "\\.(css|less)$": "identity-obj-proxy"
+    }
+
+}
+
+3. install jest-fetch-mock to mock api CALLs
+command: npm install jest-fetch-mock --dev
+
+
