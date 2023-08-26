@@ -8,6 +8,9 @@ import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 import { values } from '@fluentui/react';
 import type {objectProp} from "../../Utils"
+
+import styles from "./Example.module.css";
+
 type Props =
 {
   onSend:(questions: string)=>void,
@@ -25,15 +28,9 @@ export const ExampleDatapoints = ({onSend,selectedDatapoints, onSelectedDatapoin
   const [indeterminate, setIndeterminate] = useState<boolean>(true);
   const [checkAll, setCheckAll] = useState<boolean>(false);
 
-  console.log(checkedList)
-
   const CheckboxGroup = Checkbox.Group;
 
-  const items: MenuProps['items'] =
-[{
-  key: "PersonalLines",
-  label: "Personal Lines",
-  children: [
+  const personalLinesitems: MenuProps['items'] = [
     {
       key: "PersonalLines/Home",
       label: "Home"
@@ -42,16 +39,19 @@ export const ExampleDatapoints = ({onSend,selectedDatapoints, onSelectedDatapoin
       key: "PersonalLines/Auto",
       label: "Auto",
     }
-  ]},
-  {
-    key: "CommercialLines",
-    label: "Commercial Lines"
-  },
-  {
-    key: "Claims",
-    label: "Claims"
-  }
-];
+  ];
+  const commercialLinesItems: MenuProps['items'] = [
+    {
+      key: "ToDecide",
+      label: "To Decide"
+    }]
+
+ const claimItems: MenuProps['items']  =
+[{
+  key: "ToDecide",
+  label: "To Decide"
+}]
+
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
     // console.log(key)
@@ -97,16 +97,27 @@ export const ExampleDatapoints = ({onSend,selectedDatapoints, onSelectedDatapoin
 
 
   }
-
+let itemTest = null
   return(
-  <div>
-  <Dropdown menu={{ items,onClick }}>
+  <>
+  <div className={styles.dropDownLayout}>
+  <Dropdown menu={{ items:personalLinesitems, onClick }}>
     <a onClick={(e) => e.preventDefault()}>
-      <Space>
-      <Button>{path??"Choose your datapoints"}</Button>
-      </Space>
+      <Button className={styles.fixedButton} size='middle'>{"PERSONAL LINES"}</Button>
     </a>
   </Dropdown>
+  <Dropdown menu={{ items:commercialLinesItems,onClick: ()=> setShowCheckbox(false) }}>
+    <a onClick={(e) => e.preventDefault()}>
+      <Button className={styles.fixedButton} size='middle'>{"COMMERCIAL LINES"}</Button>
+    </a>
+  </Dropdown>
+
+  <Dropdown menu={{ items:claimItems,onClick: ()=> setShowCheckbox(false) }}>
+    <a onClick={(e) => e.preventDefault()}>
+      <Button className={styles.fixedButton} size='middle'>{"CLAIMS"}</Button>
+    </a>
+  </Dropdown>
+  </div>
   {showCheckbox &&
   <>
   <br/>
@@ -115,13 +126,15 @@ export const ExampleDatapoints = ({onSend,selectedDatapoints, onSelectedDatapoin
         Choose All Datapoints
       </Checkbox>
       <Divider />
-      <CheckboxGroup options={checkedList.map((item)=> item?.label)} value={selectedDatapoints} onChange={onChange} />
+      <div className={styles.checkboxContainer}>
+      <CheckboxGroup className={styles.checkboxGroup}  options={checkedList.map((item)=> item?.label)} value={selectedDatapoints} onChange={onChange} />
+      </div>
       <Button style={{marginTop:'5%'}}  shape="round" size="small" onClick={ onSendData}>
         Get Datapoints
       </Button>
   </>
   }
-  </div>
+  </>
   )
 }
 

@@ -130,7 +130,8 @@ const Chat = () => {
                     :(
                         <div className={styles.chatEmptyState}>
                         <h2 className={styles.chatEmptyStateTitle}>Chat with your data</h2>
-                        <h3 className={styles.chatEmptyStateSubtitle}>Enter prompt or choose from below</h3>
+                        <h3 className={styles.chatEmptyStateSubtitle}>Enter prompt or choose from options below</h3>
+                        <br/>
                           <ExampleDatapoints onSend={question => makeApiRequest(question, true)} selectedDatapoints= {selectedDatapoints} onSelectedDatapoints = {onSelectedDatapoints} path={path} onSelectedPath = {onSelectedPath}/>
                     </div>)
                     }

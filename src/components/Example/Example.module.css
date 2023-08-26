@@ -31,6 +31,26 @@
     height: 100px;
 }
 
+
+.checkboxGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: '100%';
+  }
+
+.dropDownLayout > * {
+    margin-right: 20px;
+  }
+.fixedButton{
+    width: 170px;
+}
+.checkboxContainer{
+     max-height: 200px;
+     overflow: scroll;
+}
+
+
 @media only screen and (max-height: 780px) {
     .exampleText {
         font-size: 20px;
