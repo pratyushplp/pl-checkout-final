@@ -33,12 +33,9 @@ export const Answer = ({
 
     const updateratingList = (e:any) =>
     {
-        console.log(e)
-        // console.log(((e.target as HTMLButtonElement)))
         const index = e.currentTarget.value as unknown as number
         setratingList((prev)=> prev.map((item,idx)=> idx==index?!item:item))
-        console.log(index)
-        console.log(ratingList)
+
     }
 const feedbackClicked = (e:any) =>
 {

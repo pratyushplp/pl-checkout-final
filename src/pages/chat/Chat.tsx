@@ -26,7 +26,6 @@ const Chat = () => {
     const [activeCitation, setActiveCitation] = useState<string>();
     const [citationTab, setCitationTab] = useState<boolean>(false);
 
-
     const [modal, contextHolder] = Modal.useModal();
 
     //for example Datapoints
@@ -75,6 +74,33 @@ const Chat = () => {
         setIsLoading(true);
 
         try {
+
+            //TODO: if it is datapoint (i.e. selected through checkbox), send individual question for each datapoint
+            if(isDatapoint)
+            {
+                let questionList = question.split(",")
+                try{
+                const promiseList = questionList.map(async (datapoint)=> {
+                    let request:AskRequest = {prompt: datapoint, isDatapoint: isDatapoint}
+                    return AskQuestion(request)
+                })
+                let responses = await Promise.all(promiseList)
+                if(responses && responses.length >=1)
+                {
+                    responses.forEach((response,indx)=>
+                    {
+                        let transformedResponse:AskResponse ={answer:response}
+                        setAnswers(prevAnswers => [...prevAnswers, [questionList[indx], transformedResponse]])
+                    })
+                }
+            }
+            catch(e)
+            {
+                throw e
+            }
+            }
+            else
+            {
             let request : AskRequest = {prompt: question, isDatapoint: isDatapoint}
             let response = await AskQuestion(request)
             console.log(response)
@@ -84,14 +110,8 @@ const Chat = () => {
             {
                 setAnswers([...answers, [question, transformedResponse]])
             }
-            else
-            {
-            let dummyCitation: citation[] = [{filepath: "", documentName:"", pageNo: 3}]
-             //TODO: Remove the else block later
-             let mock_result : AskResponse  = {answer:"Policy number is 456 [1]. Effective date is 2023-1-1 [2].",
-                                questionId:"12345", citations: dummyCitation}
-             setAnswers([...answers, [question, mock_result]])
-            }
+        }
+
 
         } catch (e) {
             setError(e);

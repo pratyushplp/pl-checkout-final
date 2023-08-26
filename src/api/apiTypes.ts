@@ -15,10 +15,11 @@ isDatapoint: boolean,
 documentType?: string,
 }
 
+//TODO: may need to remove questionId over here
 export type AskResponse =
 {
     answer: string,
-    questionId:string,
+    questionId?:string,
     citations?: citation[],
     error?: string;
 }
