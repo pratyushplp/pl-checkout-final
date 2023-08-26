@@ -6,7 +6,6 @@ import Layout from './pages/layout/Layout';
 import Chat from './pages/chat/Chat';
 
 
-
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,6 +17,5 @@ export default function App() {
     </Routes>
     </BrowserRouter>
   )
-
 }
 

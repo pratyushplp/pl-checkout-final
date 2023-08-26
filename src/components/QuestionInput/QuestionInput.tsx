@@ -28,7 +28,6 @@ interface Props {
 
     const sendQuestion = async () =>
     {
-        console.log('sendQuestion')
         console.log(selectedDatapoints)
         if(disabled || (!question.trim() && (!selectedDatapoints || selectedDatapoints.length==0)))
         {
@@ -40,7 +39,6 @@ interface Props {
             //setIsModalOpen(true)
             return
         }
-        console.log('sendQuestion2')
         await onSend(question)
 
         if(clearOnSend){
