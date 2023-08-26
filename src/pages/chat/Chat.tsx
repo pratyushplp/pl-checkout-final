@@ -10,6 +10,7 @@ import { Modal } from "antd";
 import {NoUploadConfig} from "../../Utils/Utils"
 import type {AskRequest,AskResponse, citation} from "../../api/apiTypes";
 import styles from "./Chat.module.css";
+import { AnalysisPanel } from "../../components/AnalysisPanel/AnalysisPanel";
 
 
 const Chat = () => {
@@ -17,16 +18,17 @@ const Chat = () => {
     //for example Datapoints
     const [selectedDatapoints, setSelectedDatapoints] = useState<CheckboxValueType[]>([])
     const [path, setPath] = useState<string|null>(null)
-    const [selectedFile, setSelectedFile] = useState<File|null>();
+    const [selectedFile, setSelectedFile] = useState<File[]|null>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const lastQuestionRef = useRef<string>("");
     const [error, setError] = useState<unknown>();
     const [questionAnswers, setQuestionAnswers] = useState<[question:string, response: AskResponse][]>([]);
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
-    const [activeCitation, setActiveCitation] = useState<string>();
     const [citationTab, setCitationTab] = useState<boolean>(false);
-    const [sessionId, setSessionId] = useState<string>("")
+    const [citationValue, setCitationValue] = useState<string|null>(null)
     const [modal, contextHolder] = Modal.useModal();
+    const [selectedCitation, setSelectedCitation] = useState<number|null>(null);
+
 
     //for example Datapoints
     const onSelectedDatapoints=(value:CheckboxValueType[])=>
@@ -46,18 +48,25 @@ const Chat = () => {
         setQuestionAnswers([]);
     };
 
-    const onShowCitation = (citation:string, index:number)=>
+    const onShowCitation = (answerIndex:number,citationLink:string, citationIndex: number)=>
     {
-        if(activeCitation === citation && citationTab
-            && selectedAnswer === index )
+
+        if( citationTab && selectedAnswer === answerIndex && selectedCitation === citationIndex)
             {
                 setCitationTab(false)
             }
             else{
-                setActiveCitation(citation)
                 setCitationTab(true)
             }
-            setSelectedAnswer(index);
+            setSelectedAnswer(answerIndex);
+            setCitationValue(citationLink)
+            setSelectedCitation(citationIndex);
+
+
+            // same answer, different citation => switch
+            // different answer, different citation => switch
+            // same answer, same citation => close
+
     }
 
     const makeApiRequest = async (question: string, isDatapoint =false) => {
@@ -89,7 +98,7 @@ const Chat = () => {
                 {
                     responses.forEach((response,indx)=>
                     {
-                        let transformedResponse:AskResponse ={answer:response}
+                        let transformedResponse:AskResponse ={answer:response.answer, questionId: response.questionId,citationLinks: response.citations?.split(',')??""}
                         setQuestionAnswers(prevAnswers => [...prevAnswers, [questionList[indx], transformedResponse]])
                     })
                 }
@@ -103,9 +112,8 @@ const Chat = () => {
             {
             let request : AskRequest = {prompt: question, isDatapoint: isDatapoint}
             let response = await AskQuestion(request)
-            console.log(response)
             //TODO: Currently, predefined questionID, change to backend generated questionId later
-            let transformedResponse:AskResponse ={answer:response, questionId: "123"}
+            let transformedResponse:AskResponse ={ answer:response.answer, questionId: response.questionId }
             if(response)
             {
                 setQuestionAnswers([...questionAnswers, [question, transformedResponse]])
@@ -141,7 +149,8 @@ const Chat = () => {
                                      key={index}
                                      answer={answer[1]}
                                      isSelected = {selectedAnswer === index && citationTab}
-                                     onCitationClicked={c=>onShowCitation(c,index)}
+                                     answerIndex = {index}
+                                     onShowCitation={onShowCitation}
                                  />
                              </div>
                          </div>
@@ -168,6 +177,12 @@ const Chat = () => {
                     />
                 </div>
             </div>
+            {questionAnswers.length > 0 && citationTab && (
+                    <AnalysisPanel
+                        citationTab = {citationTab}
+                        citationValue = {citationValue}
+                    />
+                )}
         </div>
     </div>
     );

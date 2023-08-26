@@ -2,8 +2,9 @@ import { useState,useEffect } from "react";
 import { Stack, TextField} from "@fluentui/react";
 import { Modal } from "antd";
 import { Send28Filled,Attach24Filled,ArrowUpload24Filled } from "@fluentui/react-icons";
-import {NoUploadConfig, UploadSuccessConfig,UploadFailureConfig} from "../../Utils/Utils"
-import { UploadFile } from "../../api";
+import {NoUploadConfig, UploadSuccessConfig,UploadFailureConfig,SessionExpired} from "../../Utils/Utils"
+import { GenerateSessionId, UploadFile } from "../../api";
+import Cookies from "js-cookie";
 
 import styles from "./QuestionInput.module.css";
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
@@ -52,6 +53,12 @@ interface Props {
         if(ev.key === "Enter" && !ev.shiftKey)
         {
             ev.preventDefault();
+            if(!Cookies.get('sessionId'))
+            {
+                let cookieVal = await GenerateAndReturnCookies()
+                modal.warning(SessionExpired)
+                return
+            }
             await sendQuestion();
         }
     }
@@ -66,14 +73,13 @@ interface Props {
 
     const sendQuestionDisabled = disabled || !question.trim();
 
-    const handleFileUpload = () => {
-        console.log('a')//RL
-        if (selectedFile) {
-            console.log('c')//RL
-          // Create a new FormData object
+    // const handleFileUpload = () => {
+    //     if (selectedFile) {
+    //         console.log('c')//RL
+    //       // Create a new FormData object
 
-        }
-    }
+    //     }
+    // }
 
     const handleFileChange = async (event:any) => {
         let tempFiles=[]
@@ -87,16 +93,22 @@ interface Props {
                 }
             }
         }
+
         setSelectedFile(tempFiles);
         const formData = new FormData();
-        formData.append("session_id","1234567abc")
         tempFiles.forEach((file,index) =>
         {
-            console.log("YOLO")
-            console.log(file)
             // NOTE: the files name in the frontend and the argument name (i.e. files) in the function MUST be the same
             formData.append("files",file);
         })
+
+        let cookieVal = await GenerateAndReturnCookies()
+        if(!cookieVal)
+        {
+            modal.error(SessionExpired)
+            return
+        }
+
         let success = await UploadFile(formData)
         if(success)
         {
@@ -109,6 +121,25 @@ interface Props {
         };
 
 
+const GenerateAndReturnCookies = async () =>
+{
+  let temp_id = await Cookies.get('sessionId')
+  if(!temp_id)
+  {
+      let session = await GenerateSessionId()
+      if(session)
+      {
+          // setting value in cookie and putting expiry date as 1
+          await Cookies.set('sessionId', session.sessionId, { expires: 1 });
+      }
+      else{
+        console.log("error generating session id")
+        return null
+      }
+
+  }
+  return Cookies.get('sessionId')
+}
     return(
         <>
         {contextHolder}
@@ -116,7 +147,8 @@ interface Props {
             <div className={`${styles.questionAttachmentContainer}`}>
             <input type="file" multiple onChange={handleFileChange} style={{display:'none'}} id="icon-button-file" accept=".pdf,.docx,.txt" />
             <label htmlFor="icon-button-file" className={styles.questionInputSendButton}>
-            <ArrowUpload24Filled primaryFill="rgba(115, 118, 225, 1)" onClick={handleFileUpload}/>
+            {/* <ArrowUpload24Filled primaryFill="rgba(115, 118, 225, 1)" onClick={handleFileUpload}/> */}
+            <ArrowUpload24Filled primaryFill="rgba(115, 118, 225, 1)"/>
             </label>
             </div>
 

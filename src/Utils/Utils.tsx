@@ -1,3 +1,5 @@
+
+
 export const NoUploadConfig = {
     title: 'No document uploaded!',
     content: (
@@ -10,25 +12,15 @@ export const NoUploadConfig = {
   };
 
   export const UploadSuccessConfig = {
-    title: 'Document uploaded Successfully!',
-    // content: (
-    //   <>
-    //   <p>
-    //     Please upload a document first.
-    //   </p>
-    //   </>
-    // ),
+    title: 'Document uploaded Successfully!'
   };
 
   export const UploadFailureConfig = {
-    title: 'Document upload failed!!',
-    // content: (
-    //   <>
-    //   <p>
-    //     Please upload a document first.
-    //   </p>
-    //   </>
-    // ),
+    title: 'Document upload failed!!'
+  };
+
+  export const SessionExpired = {
+    title: 'Session Expired! Please upload the document again.'
   };
 
  export const pl_home_datapoints =
@@ -133,3 +125,4 @@ export const NoUploadConfig = {
       value: "PolicyNumber"
     }
   ]
+

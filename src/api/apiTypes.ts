@@ -19,12 +19,12 @@ documentType?: string,
 export type AskResponse =
 {
     answer: string,
-    questionId?:string,
-    citations?: citation[],
+    questionId:string,
+    citationLinks?: string[],
     error?: string;
 }
 
-export type Rating =
+export type Ratings =
 {
     questionId: string,
     isLike: boolean,
