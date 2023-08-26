@@ -1,9 +1,9 @@
 import { AskRequest,AskResponse,Rating,Feedback } from "./apiTypes";
 //TODO:  typescript.
+let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
+
 export const AskQuestion = async (askRequest : AskRequest)=>
 {
-
-    let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
     let endpoint = host_name+"/score";
 
     const response = await fetch(endpoint,
@@ -23,9 +23,27 @@ export const AskQuestion = async (askRequest : AskRequest)=>
     return parsedResponse
 }
 
+export const UploadFile = async (formData : FormData) =>
+{
+    //NOTE: session should change after each file upload or after certain period of time
+    let endpoint = host_name + "/files"
+    const response = await fetch(endpoint,{
+        method:"POST",
+
+    body: formData
+    })
+    const parsedResponse = await response.json()
+    if( !parsedResponse || response.status>299 || !response.ok)
+    {
+        //add logs later
+        console.log(`${response.status} :${response.statusText} `)
+        return false
+    }
+    return true
+}
+
 export const SendRating = async (rating: Rating) =>
 {
-    let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
     let endpoint = host_name+"/rating";
 
     const response = await fetch(endpoint,
@@ -48,7 +66,6 @@ export const SendRating = async (rating: Rating) =>
 
 export const SendFeedback = async (feedback:Feedback)=>
 {
-    let host_name = import.meta.env.VITE_PL_HOST !== undefined && import.meta.env.VITE_PL_HOST !== null ? import.meta.env.VITE_PL_HOST.toString() : ''
     let endpoint = host_name+"/feedback";
 
     const response = await fetch(endpoint,

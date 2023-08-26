@@ -7,7 +7,7 @@ import { UserChatMessage } from "../../components/UserChatMessage";
 import { Answer } from "../../components/Answer";
 import { AskQuestion } from "../../api";
 import { Modal } from "antd";
-import {config} from "../../Utils/Utils"
+import {NoUploadConfig} from "../../Utils/Utils"
 import type {AskRequest,AskResponse, citation} from "../../api/apiTypes";
 import styles from "./Chat.module.css";
 
@@ -21,11 +21,11 @@ const Chat = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const lastQuestionRef = useRef<string>("");
     const [error, setError] = useState<unknown>();
-    const [answers, setAnswers] = useState<[question:string, response: AskResponse][]>([]);
+    const [questionAnswers, setQuestionAnswers] = useState<[question:string, response: AskResponse][]>([]);
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
     const [activeCitation, setActiveCitation] = useState<string>();
     const [citationTab, setCitationTab] = useState<boolean>(false);
-
+    const [sessionId, setSessionId] = useState<string>("")
     const [modal, contextHolder] = Modal.useModal();
 
     //for example Datapoints
@@ -43,7 +43,7 @@ const Chat = () => {
     const clearChat = () => {
         lastQuestionRef.current = "";
         error && setError(undefined);
-        setAnswers([]);
+        setQuestionAnswers([]);
     };
 
     const onShowCitation = (citation:string, index:number)=>
@@ -64,7 +64,7 @@ const Chat = () => {
 
         if(!selectedFile)
         {
-            modal.warning(config)
+            modal.warning(NoUploadConfig)
             // TO make sure questions cant be asked without attaching a document first
             return
         }
@@ -90,7 +90,7 @@ const Chat = () => {
                     responses.forEach((response,indx)=>
                     {
                         let transformedResponse:AskResponse ={answer:response}
-                        setAnswers(prevAnswers => [...prevAnswers, [questionList[indx], transformedResponse]])
+                        setQuestionAnswers(prevAnswers => [...prevAnswers, [questionList[indx], transformedResponse]])
                     })
                 }
             }
@@ -108,7 +108,7 @@ const Chat = () => {
             let transformedResponse:AskResponse ={answer:response, questionId: "123"}
             if(response)
             {
-                setAnswers([...answers, [question, transformedResponse]])
+                setQuestionAnswers([...questionAnswers, [question, transformedResponse]])
             }
         }
 
@@ -133,7 +133,7 @@ const Chat = () => {
                     {lastQuestionRef.current?
                      (<div className={styles.chatMessageStream}>
                      {
-                     answers.map((answer, index) => (
+                     questionAnswers.map((answer, index) => (
                          <div key={index}>
                              <UserChatMessage message={answer[0]} />
                              <div className={styles.chatMessageGpt}>

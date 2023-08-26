@@ -1,2 +1,2 @@
 # pl-frontend
-Frontend for QA application like chatgpt.
+Frontend for questionAnswers application like chatgpt.

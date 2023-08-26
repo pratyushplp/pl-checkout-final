@@ -1,4 +1,4 @@
-export const config = {
+export const NoUploadConfig = {
     title: 'No document uploaded!',
     content: (
       <>
@@ -9,8 +9,27 @@ export const config = {
     ),
   };
 
- 
+  export const UploadSuccessConfig = {
+    title: 'Document uploaded Successfully!',
+    // content: (
+    //   <>
+    //   <p>
+    //     Please upload a document first.
+    //   </p>
+    //   </>
+    // ),
+  };
 
+  export const UploadFailureConfig = {
+    title: 'Document upload failed!!',
+    // content: (
+    //   <>
+    //   <p>
+    //     Please upload a document first.
+    //   </p>
+    //   </>
+    // ),
+  };
 
  export const pl_home_datapoints =
  [{label: "Policy Number",

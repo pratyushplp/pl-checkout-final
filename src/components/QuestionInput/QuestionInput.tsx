@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Stack, TextField} from "@fluentui/react";
 import { Modal } from "antd";
 import { Send28Filled,Attach24Filled,ArrowUpload24Filled } from "@fluentui/react-icons";
-import {config} from "../../Utils/Utils"
+import {NoUploadConfig, UploadSuccessConfig,UploadFailureConfig} from "../../Utils/Utils"
+import { UploadFile } from "../../api";
 
 import styles from "./QuestionInput.module.css";
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 
 interface Props {
     onSend(questions: string):void,
-    setSelectedFile(value:File|null):void,
+    setSelectedFile(value:File[]|null):void,
     disabled: boolean,
     placeholder?: string,
     clearOnSend?: boolean,
-    selectedFile?: File|null,
+    selectedFile?: File[]|null,
     selectedDatapoints?: CheckboxValueType[]
 }
 
@@ -23,8 +24,8 @@ interface Props {
  export const QuestionInput = ({onSend, setSelectedFile, disabled, placeholder="Enter Prompt", clearOnSend,selectedFile,selectedDatapoints}:Props) =>
 {
     const [question, setQuestion] = useState<string>("");
-    // const [selectedFile, setSelectedFile] = useState(null);
     const [modal, contextHolder] = Modal.useModal();
+
 
     const sendQuestion = async () =>
     {
@@ -35,7 +36,7 @@ interface Props {
         }
         if(!selectedFile)
         {
-            modal.warning(config)
+            modal.warning(NoUploadConfig)
             //setIsModalOpen(true)
             return
         }
@@ -66,29 +67,54 @@ interface Props {
     const sendQuestionDisabled = disabled || !question.trim();
 
     const handleFileUpload = () => {
+        console.log('a')//RL
         if (selectedFile) {
+            console.log('c')//RL
           // Create a new FormData object
-          const formData = new FormData();
-          formData.append('file', selectedFile);
+
         }
     }
 
-    const handleFileChange = (event:any) :void => {
-            setSelectedFile(event.target.files[0]);
+    const handleFileChange = async (event:any) => {
+        let tempFiles=[]
+        if(event.target.files)
+        {
+            for(let propName in event.target.files)
+            {
+                if(!Number.isNaN(Number(propName)))
+                {
+                    tempFiles.push(event.target.files[propName])
+                }
+            }
+        }
+        setSelectedFile(tempFiles);
+        const formData = new FormData();
+        formData.append("session_id","1234567abc")
+        tempFiles.forEach((file,index) =>
+        {
+            console.log("YOLO")
+            console.log(file)
+            // NOTE: the files name in the frontend and the argument name (i.e. files) in the function MUST be the same
+            formData.append("files",file);
+        })
+        let success = await UploadFile(formData)
+        if(success)
+        {
+            modal.success(UploadSuccessConfig)
+        }
+        else
+        {
+            modal.error(UploadFailureConfig)
+        }
         };
 
-    // const uploadFile = () =>
-    // {
-    //     var file = document.getElementById("myFile").files[0];
-    //     console.log(file.name);
-    // }
 
     return(
         <>
         {contextHolder}
         <Stack horizontal className={styles.questionInputContainer}>
             <div className={`${styles.questionAttachmentContainer}`}>
-            <input type="file" onChange={handleFileChange} style={{display:'none'}} id="icon-button-file" accept=".pdf,.docx,.txt" />
+            <input type="file" multiple onChange={handleFileChange} style={{display:'none'}} id="icon-button-file" accept=".pdf,.docx,.txt" />
             <label htmlFor="icon-button-file" className={styles.questionInputSendButton}>
             <ArrowUpload24Filled primaryFill="rgba(115, 118, 225, 1)" onClick={handleFileUpload}/>
             </label>
