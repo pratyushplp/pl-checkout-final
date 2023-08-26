@@ -10,7 +10,7 @@ export type citation =
 }
 
 export type AskRequest = {
-question: string,
+prompt: string,
 isDatapoint: boolean,
 documentType?: string,
 }
