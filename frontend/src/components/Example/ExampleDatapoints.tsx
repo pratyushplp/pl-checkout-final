@@ -101,18 +101,18 @@ let itemTest = null
   <div className={styles.dropDownLayout}>
   <Dropdown menu={{ items:personalLinesitems, onClick }}>
     <a onClick={(e) => e.preventDefault()}>
-      <Button className={styles.fixedButton} size='middle'>{"PERSONAL LINES"}</Button>
+      <Button className={styles.fixedButton} size='middle'>{"INSURANCE"}</Button>
     </a>
   </Dropdown>
   <Dropdown menu={{ items:commercialLinesItems,onClick: ()=> setShowCheckbox(false) }}>
     <a onClick={(e) => e.preventDefault()}>
-      <Button className={styles.fixedButton} size='middle'>{"COMMERCIAL LINES"}</Button>
+      <Button className={styles.fixedButton} size='middle'>{"BOOKS"}</Button>
     </a>
   </Dropdown>
 
   <Dropdown menu={{ items:claimItems,onClick: ()=> setShowCheckbox(false) }}>
     <a onClick={(e) => e.preventDefault()}>
-      <Button className={styles.fixedButton} size='middle'>{"CLAIMS"}</Button>
+      <Button className={styles.fixedButton} size='middle'>{"HEALTH"}</Button>
     </a>
   </Dropdown>
   </div>

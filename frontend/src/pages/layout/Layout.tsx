@@ -14,7 +14,7 @@ const Layout = () => {
                 <div className={styles.headerContainer}>
                     <Link to="/" className={styles.headerTitleContainer}>
                        <img src={ajgLogo} alt="icon" className={styles.logo}/>
-                        <h3 className={styles.headerTitle}>Gallagher</h3>
+                        <h3 className={styles.headerTitle}>CHATBOT</h3>
                     </Link>
                     <nav className={styles.headerNavList}>
                         <ul className={styles.headerNavList}>

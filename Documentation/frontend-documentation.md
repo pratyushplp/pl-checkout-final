@@ -15,7 +15,7 @@ Welcome to the Personal Lines AI Chatbot documentation! This guide will help you
 
 ## Introduction
 
-The personal lines Chatbot is designed to provide intelligent responses to your questions and assist you in various tasks. In addition to text-based queries, the chatbot allows you to upload documents and ask questions related to the content of those documents.
+The Chatbot Prat is designed to provide intelligent responses to your questions and assist you in various tasks. In addition to text-based queries, the chatbot allows you to upload documents and ask questions related to the content of those documents.
 
 ## Getting Started
 To run react we have used Vite. Vite is a modern frontend tooling that aims to provide a faster and leaner development experience for modern web projects. Create a Vite project by running this command in the terminal.
@@ -31,9 +31,9 @@ To use the  Chatbot in your React application, follow these steps:
 
 Do note that this project was created using typescript, thus the tsconfig.json file may need to be updated, especially when adding type.
 
-## Using Personal Lines Chatbot
+## Using Chatbot Prat
  The steps involved are mentioned below
-1. User uploads a pdf and asks questions regarding that pdf. For instance, a user may upload an insurance document and asks for its policy number. 
+1. User uploads a pdf and asks questions regarding that pdf. For instance, a user may upload a document(example: insurance document) and asks for its policy number. 
 
 2. The frontend website calls the backend API to upload the document and transfer the user's prompt. 
 

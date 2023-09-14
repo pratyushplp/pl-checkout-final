@@ -1,0 +1,15 @@
+CREATE TABLE GPTInsight.[Session]
+(
+    [guid]        NVARCHAR(100) NOT NULL,
+    [session_id]  NVARCHAR(50)  NOT NULL,
+    [question_id] NVARCHAR(50)  NOT NULL,
+    [question]    NVARCHAR(400) NULL,
+    [response]    NVARCHAR(MAX) NULL,
+    [thumbs_up]   BIT           NULL,
+    [thumbs_down] BIT           NULL,
+    [Feedback]    NVARCHAR(400) NULL,
+    [citations]   NVARCHAR(400) NULL,
+    CONSTRAINT [Session_PK]
+        PRIMARY KEY NONCLUSTERED ([guid]) NOT ENFORCED
+)
+WITH (DISTRIBUTION = HASH([guid]), HEAP);
