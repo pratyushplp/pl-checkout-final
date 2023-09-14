@@ -6,7 +6,7 @@ Welcome to the Prat AI Chatbot documentation! This guide will help you understan
 
 1. [Introduction](#introduction)
 2. [Getting Started](#getting-started)
-3. [Using Personal Lines](#using-the-chatbot)
+3. [Using the Chatbot](#using-the-chatbot)
    - [Uploading Documents](#uploading-documents)
    - [Asking Questions about Documents](#asking-questions-about-documents)
 4. [React Components](#react-components)
@@ -41,6 +41,13 @@ Do note that this project was created using typescript, thus the tsconfig.json f
 
 ## High Level Architecture
 ![1presentation](https://github.com/pratyushplp/webapp-chatbot/assets/24541975/04fe1c9a-ce38-408d-88a3-d9c0ea10c50e)
+
+## Demo Screenshot
+
+![Screenshot 2023-09-14 at 11 43 44 AM](https://github.com/pratyushplp/webapp-chatbot/assets/24541975/f5d084a0-24df-4960-b5b7-abb203962e3d)
+
+![Screenshot 2023-09-14 at 11 46 28 AM](https://github.com/pratyushplp/webapp-chatbot/assets/24541975/cc10bd6c-fa74-4d5b-a22e-f938bc83cd12)
+
 
 ## Backend
 The backend portion is completed using fast api with python and .net 6 and C#. The .net code will be updated soon. To spin up the backend server for fast api and python use the command below.
