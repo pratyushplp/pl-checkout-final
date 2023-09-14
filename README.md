@@ -10,7 +10,7 @@ Welcome to the Prat AI Chatbot documentation! This guide will help you understan
    - [Uploading Documents](#uploading-documents)
    - [Asking Questions about Documents](#asking-questions-about-documents)
 4. [React Components](#react-components)
-5. [Testing]
+5. [Testing](#testing)
 
 
 ## Introduction
