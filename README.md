@@ -42,6 +42,12 @@ Do note that this project was created using typescript, thus the tsconfig.json f
 ## High Level Architecture
 ![1presentation](https://github.com/pratyushplp/webapp-chatbot/assets/24541975/04fe1c9a-ce38-408d-88a3-d9c0ea10c50e)
 
+## Backend
+The backend portion is completed using fast api with python and .net 6 and C#. The .net code will be updated soon. To spin up the backend server for fast api and python use the command below.
+ uvicorn test:app –reload
+
+## Cloud
+For cloud storage and compute Azure is used. You have to create a .env file and insert the required credentials.
 
 ## React Components
 **This section is for developers**. The main page for the chatbot is the chat page (chat.tsx). The main components are as follow.
@@ -83,9 +89,3 @@ add update jest.config.json to
 3. install jest-fetch-mock to mock api CALLs
 command: npm install jest-fetch-mock --dev
 
-## Backend
-The backend portion is completed using fast api with python and .net 6 and C#. The .net code will be updated soon. To spin up the backend server for fast api and python use the command below.
- uvicorn test:app –reload
-
-## Cloud
-For cloud storage and compute Azure is used. You have to create a .env file and insert the required credentials.
