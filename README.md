@@ -33,8 +33,8 @@ Do note that this project was created using typescript, thus the tsconfig.json f
 
    ## TO RUN USING DOCKER COMPOSE:
    Start all container in yaml file. Go to the doceker-compose file directory and use the command : 
-**   docker-compose up
-**   
+   docker-compose up
+   
 ## Using Chatbot Prat
  The steps involved are mentioned below
 1. User uploads a pdf and asks questions regarding that pdf. For instance, a user may upload a document(example: insurance document) and asks for its policy number. 
